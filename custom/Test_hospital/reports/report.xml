@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!--    <record id="report_purchase_request_detail" model="ir.actions.report">-->
+    <!--        <field name="name">Purchase Details</field>-->
+    <!--        <field name="model">purchase.order</field>-->
+    <!--        <field name="report_type">qweb-pdf</field>-->
+    <!--        <field name="report_name">Purchase_Request.report_purchase_request</field>-->
+    <!--        <field name="report_file">Purchase_Request.report_purchase_request</field>-->
+    <!--        <field name="binding_model_id" ref="model_purchase_order"/>-->
+    <!--        <field name="binding_type">report</field>-->
+    <!--    </record>-->
+    <record id="report_purchase_request_detail" model="ir.actions.report">
+        <field name="name">Purchase Details</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">Test_hospital.report_purchase_request</field>
+        <field name="report_file">Test_hospital.report_purchase_request</field>
+    </record>
+</odoo>

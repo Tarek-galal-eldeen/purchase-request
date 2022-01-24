@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_orders_menu" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="requested_by_id"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="total_price"/>
+                <field name="state"/>
+                <field name="rejection_reason"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="orders_menu_form" model="ir.ui.view">
+        <field name="name">purchase.order.form</field>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_draft" id="action_draft" string="Draft" class="btn-primary" type="object"
+                            states="cancel,approve,reject"/>
+                    <button name="action_to_be_approved" id="action_to_be_approved" string="To Be Approved"
+                            class="btn-primary" type="object" states="draft"/>
+                    <button name="action_approve" id="action_approve" string="Approve" class="btn-primary"
+                            type="object" states="to_be_approved"/>
+                    <!--                    <button name="action_reject" id="action_reject" string="Reject" type="object"-->
+                    <!--                            states="to_be_approved"/>-->
+                    <button name="action_cancel" id="action_cancel" string="Cancel" type="object" states="draft"/>
+                    <button name="%(action_reject_order)d" id="action_confirm" string="Reject Order"
+                            class="btn-primary" type="action" states="to_be_approved"/>
+
+                    <field name="state" widget="statusbar" options="{}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" attrs="{'readonly':[('state','in',['approve','cancel','reject'])]}"/>
+                            <field name="requested_by_id"
+                                   attrs="{'readonly':[('state','in',['approve','cancel','reject'])]}"/>
+                        </group>
+                        <group>
+                            <field name="start_date"
+                                   attrs="{'readonly':[('state','in',['approve','cancel','reject'])]}"/>
+                            <field name="end_date" attrs="{'readonly':[('state','in',['approve','cancel','reject'])]}"/>
+                        </group>
+                        <group>
+                            <field name="total_price"/>
+                        </group>
+                        <group>
+                            <field name="rejection_reason"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Order Lines" name="order_lines">
+                            <field name="order_lines">
+                                <tree>
+                                    <field name="product_id"/>
+                                    <field name="description"/>
+                                    <field name="quantity"/>
+                                    <field name="cost_price"/>
+                                    <field name="total"/>
+                                </tree>
+                                <form>
+                                    <group>
+                                        <group>
+                                            <field name="product_id"/>
+                                            <field name="description"/>
+                                        </group>
+                                        <group>
+                                            <field name="quantity"/>
+                                            <field name="cost_price"/>
+                                            <field name="total"/>
+                                        </group>
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <!--                <div class="oe_chatter">-->
+                <!--                    <field name="message_follower_ids"/>-->
+                <!--                    <field name="activity_ids"/>-->
+                <!--                    <field name="message_ids"/>-->
+                <!--                </div>-->
+            </form>
+        </field>
+    </record>
+
+
+    <record id="orders_menu_action" model="ir.actions.act_window">
+        <field name="name">Orders Menu</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Order!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="purchase_root"
+              name="Purchase"
+              action="orders_menu_action"
+              sequence="5">
+        <menuitem id="purchase_requests_root"
+                  name="Purchase Requests"
+                  action="orders_menu_action"
+                  sequence="5"/>
+        <menuitem id="purchase_lines_root"
+                  name="Order Lines"
+                  action="order_lines_action"
+                  sequence="6"/>
+    </menuitem>
+
+
+</odoo>

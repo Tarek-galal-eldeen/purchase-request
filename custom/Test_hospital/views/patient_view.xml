@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_patient_tree" model="ir.ui.view">
+        <field name="name">hospital.patient.form</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="responsible_id" optional="show"/>
+                <field name="age"/>
+                <field name="gender" optional="show"/>
+                <field name="note" optional="show"/>
+                <field name="appointment_count" optional="show"/>
+                <field name="state" optional="show"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_patient_form" model="ir.ui.view">
+        <field name="name">hospital.patient.form</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_confirm" id="action_confirm" string="Confirm" class="btn-primary" type="object"
+                            confirm="Confirm the patient?" states="draft"/>
+                    <button name="action_done" id="action_done" string="Done" class="btn-primary" type="object"
+                            confirm="Mark patient as Done?" states="confirm"
+                    />
+                    <button name="action_draft" id="action_draft" string="Draft" class="btn-primary" type="object"
+                            confirm="Mark patient as Draft?" states="cancel"
+                    />
+                    <button name="action_cancel" id="action_cancel" string="Cancel" type="object"
+                            confirm="Cancel the patient?" states="draft,done,confirm"
+                    />
+                    <button name="%(action_create_appointment)d" id="action_confirm" string="Create Appointment"
+                            class="btn-primary" type="action"/>
+
+                    <field name="state" widget="statusbar" options="{}"
+                           statusbar_visible="draft,confirm,done"/>
+                </header>
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="reference"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="responsible_id"/>
+                            <field name="age"/>
+                        </group>
+                        <group>
+                            <field name="gender" invisible="context.get('hide_gender')"/>
+                            <field name="note"/>
+                            <field name="appointment_count"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_patient_search" model="ir.ui.view">
+        <field name="name">hospital.patient.search</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <search string="Patients">
+                <field name="name"/>
+                <field name="note"/>
+                <separator/>
+                <filter name="male" string="Male" domain="[('gender', '=', 'male')]"/>
+                <filter name="female" string="Female" domain="[('gender', '=', 'female')]"/>
+                <filter name="other" string="Other" domain="[('gender', '=', 'other')]"/>
+                <group expand="1" string="Group By">
+                    <filter string="Gender" name="gender" context="{'group_by':'gender'}"/>
+                    <!--                    <filter string="Age" name="age" context="{'group_by':'age'}"/>-->
+                    <filter string="Status" name="state" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_patient_kanban" model="ir.ui.view">
+        <field name="name">hospital.patient.kanban</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="id"/>
+                <field name="name"/>
+                <field name="age"/>
+                <field name="gender"/>
+                <field name="note"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div t-attf-class="oe_Kanban_details">
+                                <ul>
+                                    <li>
+                                        Name:
+                                        <field name="name"/>
+                                    </li>
+                                    <li>
+                                        Age:
+                                        <field name="age"/>
+                                    </li>
+                                    <li>
+                                        Gender:
+                                        <field name="gender"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <record id="patient_action" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <!--        <field name="context">{'search_default_age': 1}</field>-->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create patient!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="menu_hospital_root"
+              name="Hospital"
+              sequence="10"/>
+
+    <menuitem id="menu_hospital_patient_root"
+              name="Patients"
+              parent="menu_hospital_root"
+              sequence="10"/>
+
+    <menuitem id="menu_hospital_patient"
+              name="Patients"
+              action="patient_action"
+              parent="menu_hospital_patient_root"
+              sequence="10"/>
+
+    <menuitem id="menu_hospital_doctor"
+              name="Doctors"
+              action="doctor_action"
+              parent="menu_hospital_root"
+              sequence="10"/>
+
+</odoo>

@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_order,access.purchase.order,model_purchase_order,,1,1,1,1
+access_order_lines,access.order.lines,model_order_lines,,1,1,1,1
+access_create_reject_wizard,access.create.reject.wizard,model_create_reject_wizard,,1,1,1,1

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="report_purchase_request">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="oe-structure"/>
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <table class="table table-borderless">
+                                            <tr>
+                                                <td>
+                                                    <strong>
+                                                        Name:
+                                                    </strong>
+                                                    <span t-field="o.name"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>
+                                                        Requested by:
+                                                    </strong>
+                                                    <span t-field="o.requested_by_id"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>
+                                                        Total Price:
+                                                    </strong>
+                                                    <span t-field="o.total_price"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <table class="table table-borderless">
+                                            <tr>
+                                                <td>
+                                                    <strong>
+                                                        Start Date:
+                                                    </strong>
+                                                    <span t-field="o.start_date"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>
+                                                        End Date:
+                                                    </strong>
+                                                    <span t-field="o.end_date"/>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>
+                                                        Rejection Reason:
+                                                    </strong>
+                                                    <span t-field="o.rejection_reason"/>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                        <br/>
+                        <t t-if="o.order_lines">
+                            <div>Order Lines</div>
+                            <br/>
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">
+                                                    #
+                                                </th>
+                                                <th>
+                                                    Product Name
+                                                </th>
+                                                <th>
+                                                    Description
+                                                </th>
+                                                <th>
+                                                    Quantity
+                                                </th>
+                                                <th>
+                                                    Cost Price
+                                                </th>
+                                                <th>
+                                                    Total
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <t t-set="line_count" t-value="0"/>
+                                        <t t-foreach="o.order_lines" t-as="line">
+                                            <t t-set="line_count" t-value="line_count + 1"/>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <strong>
+                                                            <span t-esc="line_count"/>
+                                                        </strong>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.product_id"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.description"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.quantity"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.cost_price"/>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.total"/>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </t>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
